@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Twitter. It's what's happening.</title>
+    <style>
+       body {background-color: lightblue;}
+    </style>
+</head>
+<body>
+{% if myuser %}
+<h1 style="color: blue; text-align: center;">Welcome to Twitter
+    <p style="text-align: center;"><i style="color: black;">Login in now to check your notifications&nbsp; {{ myuser.user_name }} </i></p>
+    <button  style="height:30px; width:100px"  onclick="location.href='/profile?user_id={{myuser.key.id()}}'" type="button">
+        View Profile
+    </button>
+    <button  style="height:30px; width:90px"  onclick="location.href='{{ url }}'" type="button">
+        Logout
+    </button>
+</h1>
+
+{% if myuser.user_name | length == 0 %}
+<form method="Get" >
+<br>
+    <p style="text-align: center;"><strong style="color: black;">Set your ID here  </strong> &nbsp;&nbsp;&nbsp;
+        <input name="user_name" type="text" value="" pattern="[A-Za-z]*"  align="center" title="Alphabet characters only" minlength=5>
+        <br>
+        <br>
+            <textarea rows="4" cols="50" name="bio_text" maxlength="250"></textarea>
+        <br>
+            <input type="submit" value="Set Username" />
+    </p>
+</form>
+
+{% else %}
+<br>
+<br>
+<br>
+<br>
+
+<form method="Get">
+
+    <p style="text-align: center;"><strong style="color: #000;">Search User/Post </strong> &nbsp;&nbsp;&nbsp;
+        <input name="search_text" type="text" value="" pattern="[A-Za-z]*"  align="center" title="Alphabet characters only" minlength=2>&nbsp;&nbsp;&nbsp;
+        <select name="query_type">
+            <option value="user">All</option>
+            <option value="post">Post</option>
+            <option value="user">User</option>
+        </select>
+
+        <input type="submit" value="Search" />
+</form>
+<br><br>
+
+<form style="text-align: center;" action="{{ upload_url }}" method="Post" enctype="multipart/form-data" >
+
+&nbsp;&nbsp;<textarea  rows="4" cols="50" name="share_text" maxlength="250">{% if editfeed %}{{editfeed.share_text}}{% endif %}</textarea>
+<br>
+        &nbsp;&nbsp;<input type="file" name="share_image" accept="image/*"/>
+    &nbsp;&nbsp;&nbsp;<input type="submit" value="{% if editfeed  %}Update{% else %}Share{% endif %}" name = "share_type"/><input type="hidden" value="{% if editfeed  %} {{editfeed.key.id()}}{% endif %}" name = "edit_feed_id"/>
+</form>
+
+<div align="center" >
+  <ul>
+{% for feed in feeds %}
+      <form method="Get">
+          <style="border: black"></form>
+
+      <h3 align="left"><a href="/profile?user_id={{ feed.user_id }}">{{ feed.user_name }}</a></h3>
+      <img src="/view_photo/{{feed.display}}" class="thumbnail">
+      <p align="left">{{feed.share_text}}</p>
+    <br>
+    <br>
+
+    {% if feed.user_id ==  myuser.key.id() %}
+        <input  type="hidden" value="{{ feed.key.id() }}" name = "feed_id" hidden/>
+        <input  type="submit" value="Delete" name = "query_type"/>
+        <input  type="submit" value="Edit" name = "query_type"/>
+    {% endif %}
+</li><br>
+
+      {% endfor %}
+  </ul>
+</div>
+{% endif %}.
+{% else %}
+<h1 style="color: black; text-align: center;"><i style="color: black;">See what’s happening in the world right now</i>
+    <p style="text-align: center;"><i style="color: blue;">Join Twitter today.</i></p>
+    <button  style="height:40px; width:80px"  onclick="location.href='{{ url }}'" type="button">
+        LOGIN
+    </button>
+</h1>
+{% endif %}
+</body>
+</html>
+
+

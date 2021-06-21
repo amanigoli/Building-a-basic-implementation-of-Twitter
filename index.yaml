@@ -1,0 +1,11 @@
+indexes:
+- kind: "Tweet"
+  properties:
+  - name: "user_id"
+  - name: "time"
+    direction: desc
+- kind: "Tweet"
+  properties:
+  - name: "user_name"
+  - name: "time"
+    direction: desc

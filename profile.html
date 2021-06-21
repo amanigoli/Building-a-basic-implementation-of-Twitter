@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter</title>
+    <style>
+     body {
+        background-color: lightblue;
+          }
+    </style>
+</head>
+<body>
+
+<div style="border: black">
+<form action="/profile" method="post" >
+
+    <input type="submit" value="Back" name="cancel" />
+    <div align="center">
+        <div class="left">
+            User Name: <input name="user_name" type="text" value= {{myuser.user_name}} disabled> <br />
+        </div>
+    </div>
+
+    <div align="center">
+        <div class="left">
+            First Name :<input name="user_first_name" type="text" value="{{myuser.first_name}}" {% if otheruserprofile %} disabled {%endif%}}> <br />
+        </div>
+    </div>
+
+        <div align="center">
+        <div class="left">
+            Last Name:  <input name="user_last_name" type="text" value="{{myuser.last_name}}" {% if otheruserprofile %} disabled {%endif%}}> <br />
+        </div>
+    </div>
+
+    <div align="center">
+        <div class="left">
+            Date of birth:<input name="date" type="date" value="{{myuser.dob}}" {% if otheruserprofile %} disabled {%endif%}}> <br />
+        </div>
+    </div>
+    <br>
+
+    <div align="center">
+    {% if otheruserprofile %}{%else%}
+    <input type="hidden" value="{{myuser.key.id()}}" name="user_id"/>
+    <input type="submit" value="Update" name="update_user" />
+
+        {%endif%}
+    </div>
+</form>
+    </div>
+
+    <h4 align="center">MyBio:  {{myuser.bio_text}}</h4>
+
+    <div align="center">
+    {% if otheruserprofile %}
+    <form action="/profile" method="post" >
+    <input type="submit" value="{{follow}}" name = "follow_user" align="center"/>
+    <input type="hidden" value="{{myuser.key.id()}}" name="user_id"/>
+    </form>
+    {%endif%}
+    </div>
+
+    <br>
+    <br>
+
+<h2 align="center">Your Tweets will show up here</h2>
+    <div align="center">
+  <ul>
+{% for feed in feeds %}
+      <form method="Get">
+<li style="border: black">
+
+      <h3 align="left"><a href="/profile?user_id={{ feed.user_id }}">{{ feed.user_name }}</a></h3>
+      <img src="/view_photo/{{feed.display}}" class="thumbnail">
+      <p align="left">{{feed.share_text}}</p>
+    <br>
+    <br>
+
+</li><br>
+      </form>
+{% endfor %}
+  </ul>
+</div>
+
+</div>
+</body>
+</html>
